@@ -1,4 +1,5 @@
-// мяу.cpp: главный файл проекта.
+// nhti.cpp: главный файл проекта.
+
 
 
 #include "stdafx.h" 
@@ -53,14 +54,12 @@ int main(array<System::String ^> ^args)
 { 
 int i,n,NC; 
 FILE *in;
-char dan[9][55]={ 
+char dan[7][55]={ 
  "Какой пункт в меню стоит наибольшую сумму?            ", 
  "Самый старый пункт меню:                              ", 
  "Список пунктов \"Сразу\"  с ценой свыше 50 рублей       ", 
  "Алфавитный список пунктов меню                        ", 
  "Количество пуктов в меню по виду с клавиатуры         ", 
- "Диаграмма. Процент покупок                            ", 
- "2 пункта меню с одинаковой ценой, но разным временем  ",
  "Выход                                                 ", 
  "                                                      ",
 }; 
@@ -106,16 +105,14 @@ printf(" %s ",dan[i]);
  Console::CursorTop=12; 
  printf(BlankLine); 
  
-n=menu(8); 
+n=menu(6); 
  switch(n) { 
 case 1: maxim(menus); break; 
 case 2: first(menus); break; 
 case 3: listing(menus); break; 
 case 4: alfalist(menus); break; 
 case 5: kolvo(menus); break; 
-case 6: diagram(menus); break; 
-case 7: slvpr(menus); break;
-case 8: exit(0); 
+case 6: exit(0); 
  } 
 } // конец while(1)... 
 return 0; 
@@ -123,14 +120,12 @@ return 0;
  
 int menu(int n) 
 { 
-	char dan[9][55]={ 
+	char dan[7][55]={ 
  "Какой пункт в меню стоит наибольшую сумму?            ", 
  "Самый старый пункт меню:                              ", 
  "Список пунктов \"Сразу\"  с ценой свыше 50 рублей       ", 
  "Алфавитный список пунктов меню                        ", 
  "Количество пуктов в меню по виду с клавиатуры         ", 
- "Диаграмма. Процент покупок                            ", 
- "2 пункта меню с одинаковой ценой, но разным временем  ",
  "Выход                                                 ", 
  "                                                      ",
 }; 
@@ -361,87 +356,4 @@ if (nt->tsena>50 && strcmp(nt->vid,"Сразу")==0)
 printf("\n\r %-20s %ld р.",nt->name,nt->tsena); 
 getch(); 
 }
-void slvpr(struct z *menus)
-{
 
-int n=0,NC;
-FILE* in;
-in=fopen("MENU.txt","r");
-fscanf(in,"%d",&NC); 
-Console::ForegroundColor=ConsoleColor::White; 
-Console::BackgroundColor=ConsoleColor::Black;
-Console::Clear();
-printf("\n\r Список пунктов с равной ценой но разным временем подачи"); 
-printf("\n\r=====================================================\n\r"); 
-int i,j;
-	for(int i=1 ;i<NC;i++)
-	{if(n==1) break;
-		for(int j=0;j<i;j++)
-		{if(n==1) break;
-		if (strcmp(menus[i].vid,menus[j].vid)==1)
-		{
-			if(menus[i].tsena==menus[j].tsena)
-			{
-				printf("%-20s %7ld %s \n",menus[i].name,menus[i].tsena,menus[i].vid);
-				printf("%-20s %7ld %s \n",menus[j].name,menus[j].tsena,menus[j].vid);
-				n=1;
-			}
-		}
-}
-	}
-
-getch();
-}
-void diagram(struct z *menus) 
-{ 
-struct sp *nt; 
-int len,i,NColor,k,il,NC; 
-FILE* in;
-in=fopen("MENU.txt","r");
-fscanf(in,"%d",&NC); 
-long sum = 0,kil ; 
-float raschet;
-char F[20];
-char str1[20]; 
-char str2[20]; 
-System::ConsoleColor Color; 
-Console::ForegroundColor=ConsoleColor::White; 
-Console::BackgroundColor=ConsoleColor::Black; 
-Console::Clear(); 
-for(i=0;i<NC;i++) sum = sum+menus[i].kolva ; 
-
-if(!spisok) 
-for(i=0;i<NC;i++) 
-vstavka(menus,menus[i].name); 
-Color=ConsoleColor::Black; NColor=0; 
-
-for(nt=spisok,i=0,k=0; nt!=0; nt=nt->sled,i++,k++) 
-{sprintf(F,nt->punkt);
-	for(il=0;i<NC;il++){
-		if (strcmp(menus[il].name,F)==0){
-			break;
-		}
-	}
-kil=menus[il].kolva;
-raschet=((kil*100.)/sum);
-sprintf(str1,"%s",F); 
-sprintf(str2,"%3.1f%%",raschet); 
-Console::ForegroundColor=ConsoleColor::White; 
-Console::BackgroundColor= ConsoleColor::Black; 
-Console::CursorLeft=5; Console::CursorTop=i+1; 
-printf(str1); 
-Console::CursorLeft=20; 
-printf("%s",str2);
-
-Console::BackgroundColor=++Color; NColor++; 
-Console::CursorLeft=30; 
-for(len=0; raschet!=0, raschet>0; len++){
-printf(" ");
-raschet=raschet-1;
-}
-if(NColor==14) 
-{ Color=ConsoleColor::Black; NColor=0; } 
-} 
-getch(); 
-return ; 
-}
